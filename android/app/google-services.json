@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338234879953",
+    "project_id": "leap-web-d8af0",
+    "storage_bucket": "leap-web-d8af0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338234879953:android:cddaa491693779596d3af0",
+        "android_client_info": {
+          "package_name": "com.example.leap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS8_zfAMxC34ruAluibm79UAPR0-0t6sI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
