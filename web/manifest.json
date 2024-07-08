@@ -1,6 +1,6 @@
 {
-    "name": "globaladvice_new",
-    "short_name": "globaladvice_new",
+    "name": "leap",
+    "short_name": "leap",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

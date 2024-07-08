@@ -1,79 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:globaladvice_new/core/utils/config_size.dart';
+import 'package:leap/core/resource_manager/colors.dart';
+import 'package:leap/core/utils/app_size.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
+  final String? labelText;
+  final String? hintText;
   final TextEditingController controller;
-  Widget? suffix;
-  TextInputType inputType;
-  bool? obscureText;
-  String? hint;
-
-  CustomTextField({
-    super.key,
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final bool readOnly;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final void Function()? onTap;
+  final TextStyle? hintStyle;
+   const CustomTextField({
+    Key? key,
+      this.labelText,
     required this.controller,
-    this.suffix,
-    required this.inputType,
+    this.keyboardType = TextInputType.text,
     this.obscureText = false,
-    this.hint,
-  });
+     this.readOnly=false,
+    this.prefixIcon, this.suffixIcon, this.onTap, this.hintText, this.hintStyle,
+  }) : super(key: key);
 
   @override
+  _CustomTextFieldState createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      keyboardType: inputType,
-      obscureText: obscureText ?? false,
-      decoration: InputDecoration(
-        hintText: hint,
-        suffixIcon: suffix,
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: ConfigSize.defaultSize!),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFFD3D3D3),
+    return SizedBox(
+      height: AppSize.defaultSize! * 6,
+      width: AppSize.screenWidth! - (AppSize.defaultSize! * 4),
+      child: TextFormField(
+        onTap:widget. onTap,
+        readOnly:widget. readOnly,
+
+        decoration: InputDecoration(
+
+            labelText: widget.labelText,
+            hintText: widget.hintText,
+
+            hintStyle:widget.hintStyle ,
+            suffixIcon: widget.suffixIcon,
+            labelStyle: const TextStyle(
+                color: AppColors.primaryColor,
+            ),
+            prefixIcon: widget.prefixIcon,
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: AppColors.borderColor.withOpacity(.4)
+              ),
+
+            ),
+          focusedBorder:    OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: AppColors.borderColor.withOpacity(.4)
+              )
+          ),
+          disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: AppColors.borderColor.withOpacity(.4)
+              )
           ),
         ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFFD3D3D3),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFFD3D3D3),
-          ),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFFD3D3D3),
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFFD3D3D3),
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFFD3D3D3),
-          ),
-        ),
+
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscureText: widget.obscureText,
       ),
-      style: const TextStyle(color: Colors.black),
     );
   }
 }

@@ -15,5 +15,3 @@ class ConnectionTimeoutException implements Exception {}
 class UnauthorizedException implements Exception {}
 
 class InternetException implements Exception {}
-
-class SignupException implements Exception {}
