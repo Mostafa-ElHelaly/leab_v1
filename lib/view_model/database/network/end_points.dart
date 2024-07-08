@@ -1,2 +1,0 @@
-String baseUrl = '';
-String getPosts = '';
