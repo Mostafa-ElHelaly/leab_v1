@@ -1,12 +1,12 @@
 import 'dart:developer';
+import 'package:globaladvice_new/core/error/exception.dart';
+import 'package:globaladvice_new/core/error/failure.dart';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:leap/core/error/exception.dart';
-import 'package:leap/core/error/failure.dart';
-import 'package:leap/core/error/failures_strings.dart';
-import 'package:leap/core/resource_manager/string_manager.dart';
-import 'package:leap/core/utils/methods.dart';
+import 'package:dio/dio.dart';
+import 'package:globaladvice_new/core/error/failures_strings.dart';
+import 'package:globaladvice_new/core/resource_manger/locale_keys.g.dart';
+import 'package:globaladvice_new/core/utils/methods.dart';
 
 class DioHelper {
   Future<Map<String, String>> header() async {
@@ -14,11 +14,20 @@ class DioHelper {
     if (kDebugMode) {
       log(token);
     }
-
     Map<String, String> headers = {
       "Authorization": "Bearer $token",
     };
     return headers;
+  }
+
+  Future<Options> options() async {
+    Map<String, String> headers = await DioHelper().header();
+    return Options(
+      receiveDataWhenStatusError: true,
+      sendTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 5000),
+      headers: headers,
+    );
   }
 
   String getTypeOfFailure(

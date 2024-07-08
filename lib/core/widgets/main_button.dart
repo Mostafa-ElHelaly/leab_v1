@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:leap/core/resource_manager/colors.dart';
-import 'package:leap/core/utils/app_size.dart';
+import 'package:globaladvice_new/core/resource_manger/color_manager.dart';
+import 'package:globaladvice_new/core/utils/config_size.dart';
 
 class MainButton extends StatelessWidget {
-  const MainButton(
-      {super.key, this.onTap, this.color, this.textColor, required this.text, this.height, this.width});
-
-  final void Function()? onTap;
+  final Function() onTap;
+  final String title;
   final Color? color;
   final Color? textColor;
-  final String text;
-  final double? height;
-  final double? width;
+
+  const MainButton({
+    super.key,
+    required this.onTap,
+    required this.title,
+    this.color,
+    this.textColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: height??AppSize.defaultSize!*4,
-        width: width??AppSize.screenWidth!*.9,
+        width: ConfigSize.screenWidth!,
+        height: ConfigSize.defaultSize! * 5,
         decoration: BoxDecoration(
-          color: color ?? AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(AppSize.defaultSize!),
-
+          color: color ?? ColorManager.kPrimaryBlueDark,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Text(
-            text,
-            style: TextStyle(color: textColor ?? Colors.white),
+            title,
+            style: TextStyle(
+              color: textColor ?? Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: ConfigSize.defaultSize! * 1.7,
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
-import 'package:leap/core/resource_manager/string_manager.dart';
+import 'package:globaladvice_new/core/resource_manger/locale_keys.g.dart';
+import 'package:globaladvice_new/core/service/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Methods {
@@ -8,6 +9,14 @@ class Methods {
   static final   instance =   Methods._internal() ;
 
   factory  Methods() => instance ;
+
+  Future<void> clearAuth() async {
+    SharedPreferences preference = getIt();
+    preference.remove(StringManager.userDataKey);
+    preference.remove(StringManager.userTokenKey);
+    preference.remove(StringManager.deviceToken);
+  }
+
   Future<void> saveUserToken({String? authToken}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (authToken != null) {

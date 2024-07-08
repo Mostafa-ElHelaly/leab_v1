@@ -1,19 +1,40 @@
+import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:leap/core/resource_manager/routes.dart';
-import 'package:leap/core/service/service_locator.dart';
-import 'package:leap/features/auth/presentation/controller/login_bloc/login_with_email_and_password_bloc.dart';
-import 'package:leap/features/home/home_screen/controller/cubit.dart';
-import 'package:leap/view/constants/extensions.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:globaladvice_new/core/resource_manger/routs_manager.dart';
+import 'package:globaladvice_new/core/service/navigation_service.dart';
+import 'package:globaladvice_new/core/service/service_locator.dart';
+import 'package:globaladvice_new/core/translations/codegen_loader.g.dart';
+import 'package:globaladvice_new/core/utils/config_size.dart';
+import 'package:globaladvice_new/features/auth/presentation/login_screen.dart';
+import 'package:globaladvice_new/features/home/presentation/home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'core/service/bloc_observer.dart';
+import 'features/auth/presentation/manager/login_bloc/login_bloc.dart';
+import 'features/auth/presentation/manager/register_bloc/register_bloc.dart';
+import 'features/auth/presentation/manager/reset_password_bloc/bloc/reset_password_bloc.dart';
+import 'main_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await ServerLocator().init();
-  ResponsiveSizingConfig.instance.setCustomBreakpoints(
-    const ScreenBreakpoints(desktop: 800, tablet: 700, watch: 200),
+  Bloc.observer = MyBlocObserver();
+
+  runApp(
+    EasyLocalization(
+      fallbackLocale: const Locale('ar'),
+      supportedLocales: const [
+        Locale('ar'),
+        Locale('en'),
+      ],
+      assetLoader: const CodegenLoader(),
+      path: 'lib/core/translations/',
+      child: const MyApp(),
+    ),
   );
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,33 +43,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ConfigSize().init(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<LoginWithEmailAndPasswordBloc>(),
+          create: (context) => getIt<RegisterBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt<HomeScreenCubit>(),
+          create: (context) => getIt<LoginBloc>(),
         ),
+        BlocProvider(create: (context) => getIt<ResetPasswordBloc>()),
       ],
-      child: ScreenUtilInit(
-        designSize: context.screenWidth >= 700
-            ? const Size(1440, 768)
-            : const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: RouteGenerator.getRoute,
-            initialRoute: Routes.home,
-            theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-                scaffoldBackgroundColor:
-                    const Color.fromRGBO(250, 250, 250, 1)),
-          );
-        },
+      child: MaterialApp(
+        title: 'Be sure!',
+        debugShowCheckedModeBanner: false,
+        supportedLocales: context.supportedLocales,
+        localizationsDelegates: context.localizationDelegates,
+        locale: context.locale,
+        theme: ThemeData(
+          textTheme: GoogleFonts.poppinsTextTheme(),
+        ),
+        navigatorKey: getIt<NavigationService>().navigatorKey,
+        onGenerateRoute: RouteGenerator.getRoute,
+        home: const LoginScreen(),
       ),
     );
   }
